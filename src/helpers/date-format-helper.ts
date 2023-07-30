@@ -11,7 +11,7 @@ export const getDateFormat = (date: string, format: string) => {
     return format.replace(/mm|dd|yyyy|yy/gi, (matched) => map[matched])
   }
   
-  export const getLocaleDateFormat = (date: string, format: any ) => {
+  export const getLocaleDateFormat = (date: number, format: any ) => {
     const newDate = new Date(date);
     return newDate.toLocaleDateString('en-US', format);
   }
