@@ -18,7 +18,7 @@ const TaskList = (props: ITaskList) => {
   const archivedTasks = tasks.filter((task) => task.archived && task.category === props.category);
   const iconModalCategory = categories.find((item) => item.value === props.category);
   return (
-    <Modal icon={iconModalCategory?.icon} title={props.category} onShow={props.onTaskListToogle}>
+    <Modal icon={iconModalCategory?.icon} title={iconModalCategory?.value} onShow={props.onTaskListToogle}>
       <div className='flex flex-col overflow-y-auto gap-3 h-52'>
         {archivedTasks.length ? archivedTasks.map((task) => {
 
