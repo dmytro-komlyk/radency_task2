@@ -18,6 +18,12 @@ export interface ITask {
   dates: string[]
 }
 
+export interface ITaskInfo {
+  category: string,
+  archived: number,
+  active: number
+}
+
 export interface ITaskState {
   tasks: Array<ITask>;
 }
