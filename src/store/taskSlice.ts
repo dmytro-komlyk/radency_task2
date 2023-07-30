@@ -4,7 +4,7 @@ import uniqueId from 'lodash/uniqueId';
 
 const mockTasks = [
   { id: uniqueId(), name: 'Shopping list', archived: false, created: Date.now(), category: 'Task', content: 'Tomatoes, bread', dates: [] },
-  { id: uniqueId(), name: 'New Feature', archived: false, created: Date.now(), category: 'Idea', content: 'Implement new feature', dates: ['2021-05-03', '2021-05-05'] },
+  { id: uniqueId(), name: 'New Feature', archived: false, created: Date.now(), category: 'Idea', content: 'Implement new feature', dates: ['2023-09-03', '2023-09-05'] },
   { id: uniqueId(), name: 'William Gaddis', archived: false, created: Date.now(), category: 'Quote', content: 'Power doesnt content', dates: [] },
 ]
 
