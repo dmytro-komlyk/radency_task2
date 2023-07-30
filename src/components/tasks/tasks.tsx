@@ -38,6 +38,7 @@ const Tasks = () => {
         onTaskRemove={handleTaskRemove}
         onTaskArchive={handleTaskArchive}
         onTaskPreviewToogle={handleTaskPreviewToggle}
+        className=''
       />
       <button
         type="button"
@@ -46,7 +47,15 @@ const Tasks = () => {
       >
         Create Note
       </button>
-      <Table className='mt-[50px]' headers={['category', 'active', 'archived']} tasks={tasksInfo} isAction={false}/>
+      <Table
+        className='mt-[50px]'
+        headers={['category', 'active', 'archived']}
+        tasks={tasksInfo}
+        isAction={false}
+        onTaskRemove={handleTaskRemove}
+        onTaskArchive={handleTaskArchive}
+        onTaskPreviewToogle={handleTaskPreviewToggle}
+      />
       {isShowTaskPreview.isShow && (
         <TaskPreview
           taskId={isShowTaskPreview.id}
