@@ -2,27 +2,26 @@ import { useState } from 'react';
 import { Modal } from '../../../common/modal/modal';
 import { useSelector } from '../../../../store/store';
 import { selectTasksState } from '../../../../store/taskSlice';
-// import { validateTaskValues } from '../../../../helpers/validate-task';
 
-// interface ITaskPreview {
-//   taskId: string,
-//   onTasktAdd: () => void,
-//   onTaskEdit: () => void,
-//   onTaskPreviewToggle: () => void
-// }
+interface ITaskPreviewProps {
+  taskId: string | null,
+  onTasktAdd: (values: {}) => void,
+  onTaskEdit: (id: string, values: {}) => void,
+  onTaskPreviewToggle: (isShow: boolean) => void
+}
 
-const TaskPreview = ({ taskId, onTasktAdd, onTaskEdit, onTaskPreviewToggle }: any) => {
+const TaskPreview = ({ taskId = null, onTasktAdd, onTaskEdit, onTaskPreviewToggle }: ITaskPreviewProps) => {
   const tasks = useSelector(selectTasksState);
-  const previewTask = taskId && tasks.find((task) => task.id === taskId);
+  const previewTask = taskId ? tasks.find((task) => task.id === taskId) : { name: '', content: '', category: '', dates: [''] };
   const initTaskState = {
-    name: previewTask?.name || '',
-    content: previewTask?.content || '',
-    category: previewTask?.category || '',
-    date: previewTask?.dates[0] || ''
+    name: previewTask?.name,
+    content: previewTask?.content,
+    category: previewTask?.category,
+    date: previewTask?.dates[0]
   }
 
   const [taskValues, setTaskValues] = useState(initTaskState);
-  // const [taskErrors, setTaskErrors] = useState({});
+
   const [isSubmit, setIsSubmit] = useState(false);
 
   const handleChange = ({ target }: any) => {
@@ -36,18 +35,12 @@ const TaskPreview = ({ taskId, onTasktAdd, onTaskEdit, onTaskPreviewToggle }: an
   const handleSubmit = (e: any) => {
     e.preventDefault();
     setIsSubmit(true);
-    if (Boolean(taskId)) {
-      onTaskEdit(taskId, taskValues);
-    } else {
-      onTasktAdd(taskValues)
-    }
-    onTaskPreviewToggle();
-    // const err = validateTaskValues(taskValues);
-    // if (Object.keys(err).length === 0) {
-    //     const book = { ...bookValues, date: parsedToIsoDate(bookValues.date), tripId: trip.id, userId: user.id };
-    //     onSubmit(book);
-    // }
-    // setTaskErrors(err);
+      if (Boolean(taskId)) {
+        onTaskEdit(taskId as string, taskValues);
+      } else {
+        onTasktAdd(taskValues)
+      }
+      onTaskPreviewToggle(false);
     setIsSubmit(false);
   }
 
@@ -138,6 +131,7 @@ const TaskPreview = ({ taskId, onTasktAdd, onTaskEdit, onTaskPreviewToggle }: an
           <input
             type='date'
             name='date'
+            min={new Date().toISOString().split("T")[0]}
             className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-slate-500 focus:border-slate-500 block w-full pl-10 p-2.5'
             placeholder='Select date'
             value={taskValues.date}
