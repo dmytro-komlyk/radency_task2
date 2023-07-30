@@ -57,12 +57,15 @@ const taskSlice = createSlice({
       },
       archiveTask: (state, action) => {
         state.tasks = state.tasks.map((task) => task.id === action.payload.id ? { ...task, archived: true } : task)
+      },
+      unarchiveTask: (state, action) => {
+        state.tasks = state.tasks.map((task) => task.id === action.payload.id ? { ...task, archived: false } : task)
       }
     },
     
 });
 
-export const { addTask, editTask, removeTask, archiveTask } = taskSlice.actions
+export const { addTask, editTask, removeTask, archiveTask, unarchiveTask } = taskSlice.actions
 
 export const selectTasksState = (state: AppState) => state.tasks;
 

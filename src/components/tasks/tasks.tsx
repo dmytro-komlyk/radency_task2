@@ -1,9 +1,9 @@
 import { Table } from './components/table/table';
 import { categories } from './constants/category';
-import { addTask, editTask, removeTask, archiveTask } from '../../store/taskSlice';
+import { addTask, editTask, removeTask, archiveTask, unarchiveTask } from '../../store/taskSlice';
 import { useDispatch, useSelector } from '../../store/store';
 import { selectTasksState } from '../../store/taskSlice';
-import { TaskPreview } from './components/components';
+import { TaskPreview, TaskList } from './components/components';
 import uniqueId from 'lodash/uniqueId';
 import { useState } from 'react';
 
@@ -12,13 +12,16 @@ const Tasks = () => {
   const tasks = useSelector(selectTasksState);
 
   const [isShowTaskPreview, setShowTaskPreview] = useState({ id: null , isShow: false });
+  const [isShowTaskListArchived, setShowTaskListArchived] = useState({ category: null, isShow: false });
 
-  const handleTaskPreviewToggle = (isShow: boolean, id = null) => setShowTaskPreview({ id, isShow })
+  const handleTaskPreviewToggle = (isShow: boolean, id = null) => setShowTaskPreview({ id, isShow });
+  const handleTaskListToggle = (isShow: boolean, category = null) => setShowTaskListArchived({ category, isShow });
 
   const handleTasktAdd = (data: {}) => dispatch(addTask(data));
   const handleTasktEdit = (id: string, data: any) => dispatch(editTask({ id, data }));
   const handleTaskRemove = (id: string) => dispatch(removeTask({ id }));
   const handleTaskArchive = (id: string) => dispatch(archiveTask({ id }));
+  const handleTaskUnarchive = (id: string) => dispatch(unarchiveTask({ id }))
 
   const tasksActive = tasks.filter((task) => !task.archived);
   const tasksInfo = categories.reduce((acc: { category: string, active: number, archived: number }[], category) => {
@@ -55,6 +58,7 @@ const Tasks = () => {
         onTaskRemove={handleTaskRemove}
         onTaskArchive={handleTaskArchive}
         onTaskPreviewToogle={handleTaskPreviewToggle}
+        onTaskListToogle={handleTaskListToggle}
       />
       {isShowTaskPreview.isShow && (
         <TaskPreview
@@ -62,6 +66,13 @@ const Tasks = () => {
           onTasktAdd={handleTasktAdd}
           onTaskEdit={handleTasktEdit}
           onTaskPreviewToggle={handleTaskPreviewToggle}
+        />
+      )}
+      {isShowTaskListArchived.isShow && (
+        <TaskList
+          category={isShowTaskListArchived.category}
+          onTaskListToogle={handleTaskListToggle}
+          onTaskUnarchive={handleTaskUnarchive}
         />
       )}
     </main>

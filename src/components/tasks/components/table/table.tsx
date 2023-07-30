@@ -9,6 +9,7 @@ interface IActions {
   onTaskPreviewToogle(status: boolean, id: any): void;
   onTaskArchive(id: any): void;
   onTaskRemove(id: any): void;
+  onTaskListToogle?(status: boolean, category?: null): void,
 }
 
 interface IHeadTable {  
@@ -46,12 +47,11 @@ const HeadTable = (props: IHeadTable) => (
 const BodyTable = (props: IBodyTable) => (
   <tbody>
     {props.body.map((task: any) => {
-      console.log(props.body, typeof task.created)
       const categoryIcon = categories.find((item) => item.value === task.category);
       const convertedCreatedDate = props.isAction && getLocaleDateFormat(task.created, { month: 'long', day: 'numeric', year: 'numeric' });
       const convertedDates = props.isAction && task.dates.slice(0, 2).map((date: string) => date.length > 0 && getDateFormat(date, 'dd/mm/yyyy'));
       return (
-      <tr key={task.id} className='p-4 border-b-[5px] border-solid border-white [&>td]:hover:bg-slate-300 cursor-pointer'>
+      <tr key={task.id} className='p-4 border-b-[5px] border-solid border-white [&>td]:hover:bg-slate-300 cursor-pointer' onClick={() => (!props.isAction && props.onTaskListToogle) && props.onTaskListToogle(true, task.category)}>
         <td className='p-2 bg-slate-200'>
           <div className='flex items-center gap-3 '>
             <FontAwesomeIcon className='w-4 h-4' icon={categoryIcon?.icon as IconProp} />
@@ -88,7 +88,7 @@ const BodyTable = (props: IBodyTable) => (
   </tbody>
 )
 
-const Table = ({ headers, tasks, className, isAction, onTaskPreviewToogle, onTaskRemove, onTaskArchive }: ITable) => {
+const Table = ({ headers, tasks, className, isAction, onTaskPreviewToogle, onTaskListToogle, onTaskRemove, onTaskArchive }: ITable) => {
   return (
     <table className={`table-fixed w-full border-collapse rounded-xl overflow-hidden ${className}`}>
       <HeadTable headers={headers} isAction={isAction} />
@@ -98,6 +98,7 @@ const Table = ({ headers, tasks, className, isAction, onTaskPreviewToogle, onTas
         onTaskPreviewToogle={onTaskPreviewToogle}
         onTaskRemove={onTaskRemove}
         onTaskArchive={onTaskArchive}
+        onTaskListToogle={onTaskListToogle}
       />
     </table>
   )
