@@ -18,7 +18,7 @@ const Tasks = () => {
   const handleTaskListToggle = (isShow: boolean, category = null) => setShowTaskListArchived({ category, isShow });
 
   const handleTasktAdd = (data: {}) => dispatch(addTask(data));
-  const handleTasktEdit = (id: string, data: any) => dispatch(editTask({ id, data }));
+  const handleTasktEdit = (id: string, data: {}) => dispatch(editTask({ id, data }));
   const handleTaskRemove = (id: string) => dispatch(removeTask({ id }));
   const handleTaskArchive = (id: string) => dispatch(archiveTask({ id }));
   const handleTaskUnarchive = (id: string) => dispatch(unarchiveTask({ id }))
