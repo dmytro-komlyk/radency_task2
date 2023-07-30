@@ -45,7 +45,7 @@ const Tasks = () => {
       />
       <button
         type="button"
-        className='ml-auto p-2 rounded bg-slate-600 text-white' 
+        className='ml-auto p-2 rounded bg-slate-600 text-white hover:bg-slate-200 hover:text-slate-900' 
         onClick={() => handleTaskPreviewToggle(true)}
       >
         Create Note
