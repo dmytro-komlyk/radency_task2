@@ -3,9 +3,9 @@ import { createSlice } from '@reduxjs/toolkit';
 import uniqueId from 'lodash/uniqueId';
 
 const mockTasks = [
-  { id: uniqueId(), name: 'Shopping list', archived: false, created: Date.now(), category: 'Task', content: 'Tomatoes, bread', dates: [] },
-  { id: uniqueId(), name: 'New Feature', archived: false, created: Date.now(), category: 'Idea', content: 'Implement new feature', dates: ['2023-09-03', '2023-09-05'] },
-  { id: uniqueId(), name: 'William Gaddis', archived: false, created: Date.now(), category: 'Quote', content: 'Power doesnt content', dates: [] },
+  { id: uniqueId(), name: 'Shopping list', archived: false, created: Date.now(), category: 'Task', content: 'Tomatoes, bread' },
+  { id: uniqueId(), name: 'New Feature', archived: false, created: Date.now(), category: 'Task', content: 'I’m gonna have a dentist appointment on the 3/5/2021, I moved it from 5/5/2021' },
+  { id: uniqueId(), name: 'William Gaddis', archived: false, created: Date.now(), category: 'Quote', content: 'Power doesnt content' },
 ]
 
 export interface ITask {
@@ -15,7 +15,6 @@ export interface ITask {
   created: number,
   category: string,
   content: string,
-  dates: string[]
 }
 
 export interface ITaskInfo {
@@ -37,20 +36,18 @@ const taskSlice = createSlice({
     initialState,
     reducers: {
       addTask: (state, action) => {
-        const { payload: { date, ...restData } } = action;
+        const { payload: { ...restData } } = action
         const newTask = {
           id: uniqueId(),
           archived: false,
           created: Date.now(),
-          dates: [date],
-          ...restData
+          ...restData,
         };
         state.tasks.push(newTask);
       },
       editTask: (state, action) => {
         const { payload: { id, data } } = action;
-        const { date, ...restData } = data;
-        state.tasks = state.tasks.map((task) => task.id === id ? { ...task, ...restData,  dates: Boolean(date) ? [ date, ...task.dates] : task.dates } : task )
+        state.tasks = state.tasks.map((task) => task.id === id ? { ...task, ...data } : task )
       },
       removeTask: (state, action) => {
         state.tasks = state.tasks.filter((task => task.id !== action.payload.id));
