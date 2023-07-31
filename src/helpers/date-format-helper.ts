@@ -1,3 +1,5 @@
+export const getParseDate = (str: string) => str.match(/\d{1,2}([\/.-])\d{1,2}\1\d{4}\b/g);
+
 export const getDateFormat = (date: string, format: string) => {
     const newDate = new Date(date);
 
@@ -11,7 +13,7 @@ export const getDateFormat = (date: string, format: string) => {
     return format.replace(/mm|dd|yyyy|yy/gi, (matched) => map[matched])
   }
   
-  export const getLocaleDateFormat = (date: number, format: any ) => {
-    const newDate = new Date(date);
-    return newDate.toLocaleDateString('en-US', format);
-  }
+export const getLocaleDateFormat = (date: number, format: any ) => {
+  const newDate = new Date(date);
+  return newDate.toLocaleDateString('en-US', format);
+}

@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { categories } from '../../constants/category';
-import { getDateFormat, getLocaleDateFormat } from '../../../../helpers/date-format-helper';
+import { getParseDate, getLocaleDateFormat } from '../../../../helpers/date-format-helper';
 import { faTrash, faBoxArchive, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { ITask, ITaskInfo } from '../../../../store/taskSlice';
 
@@ -49,7 +49,8 @@ const BodyTable = (props: IBodyTable) => (
     {props.body.map((task: any) => {
       const categoryIcon = categories.find((item) => item.value === task.category);
       const convertedCreatedDate = props.isAction && getLocaleDateFormat(task.created, { month: 'long', day: 'numeric', year: 'numeric' });
-      const convertedDates = props.isAction && task.dates.slice(0, 2).map((date: string) => date.length > 0 && getDateFormat(date, 'dd/mm/yyyy'));
+      const dates = props.isAction && getParseDate(task.content);
+  
       return (
       <tr key={task.id} className='p-4 border-b-[5px] border-solid border-white [&>td]:hover:bg-slate-300 cursor-pointer' onClick={() => (!props.isAction && props.onTaskListToogle) && props.onTaskListToogle(true, task.category)}>
         <td className='p-2 bg-slate-200'>
@@ -64,8 +65,8 @@ const BodyTable = (props: IBodyTable) => (
             <td className='p-2 bg-slate-200 truncate text-center'>{ task.category }</td>
             <td className='p-2 bg-slate-200 truncate text-center'>{ task.content }</td>
             <td className='p-2 bg-slate-200 truncate text-center'>
-              { convertedDates && (
-                <div className='flex flex-col gap-1'>{convertedDates.map((date: string, idx: number) => <span key={idx} className={`${idx === 0 ? 'bg-green-300' : 'bg-slate-300'} rounded` }>{date}</span>)}</div>
+              { dates && (
+                <div className='flex flex-col gap-1'>{dates.map((date: string, idx: number) => <span key={idx} className='bg-slate-300 rounded'>{date}</span>)}</div>
               )}
             </td>
             <td className='p-4 bg-slate-200 truncate'>

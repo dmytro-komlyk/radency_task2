@@ -12,20 +12,18 @@ interface ITaskPreviewProps {
 
 const TaskPreview = ({ taskId = null, onTasktAdd, onTaskEdit, onTaskPreviewToggle }: ITaskPreviewProps) => {
   const tasks = useSelector(selectTasksState);
-  const previewTask = taskId ? tasks.find((task) => task.id === taskId) : { name: '', content: '', category: '', dates: [''] };
+  const previewTask = taskId ? tasks.find((task) => task.id === taskId) : { name: '', content: '', category: '' };
   const initTaskState = {
-    name: previewTask?.name,
-    content: previewTask?.content,
-    category: previewTask?.category,
-    date: previewTask?.dates[0]
+    name: previewTask!.name,
+    content: previewTask!.content,
+    category: previewTask!.category,
   }
 
   const [taskValues, setTaskValues] = useState(initTaskState);
-
   const [isSubmit, setIsSubmit] = useState(false);
 
-  const handleChange = ({ target }: any) => {
-      const { name, value } = target;
+  const handleChange = (e: React.FormEvent<HTMLInputElement>) => {
+      const { name, value } = e.target as HTMLInputElement;
       setTaskValues({
         ...taskValues,
         [name]: value,
@@ -35,12 +33,12 @@ const TaskPreview = ({ taskId = null, onTasktAdd, onTaskEdit, onTaskPreviewToggl
   const handleSubmit = (e: any) => {
     e.preventDefault();
     setIsSubmit(true);
-      if (Boolean(taskId)) {
-        onTaskEdit(taskId as string, taskValues);
-      } else {
-        onTasktAdd(taskValues)
-      }
-      onTaskPreviewToggle(false);
+    if (Boolean(taskId)) {
+      onTaskEdit(taskId as string, taskValues);
+    } else {
+      onTasktAdd(taskValues)
+    }
+    onTaskPreviewToggle(false);
     setIsSubmit(false);
   }
 
@@ -121,22 +119,6 @@ const TaskPreview = ({ taskId = null, onTasktAdd, onTaskEdit, onTaskPreviewToggl
               <label htmlFor='category4'>Quote</label>
             </div>
           </fieldset>
-        </div>
-        <div className='relative z-0 w-full mb-6 group'>
-          <div className='absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none'>
-            <svg className='w-4 h-4 text-gray-500' aria-hidden='true' xmlns='http://www.w3.org/2000/svg' fill='currentColor' viewBox='0 0 20 20'>
-              <path d='M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z'/>
-            </svg>
-          </div>
-          <input
-            type='date'
-            name='date'
-            min={new Date().toISOString().split("T")[0]}
-            className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-slate-500 focus:border-slate-500 block w-full pl-10 p-2.5'
-            placeholder='Select date'
-            value={taskValues.date}
-            onChange={handleChange}
-          />
         </div>
         <button
           type='submit'
