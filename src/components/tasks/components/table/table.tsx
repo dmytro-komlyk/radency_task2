@@ -1,14 +1,15 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
-import { categories } from '../../constants/category';
+import { tableCategories } from '../../constants/table';
 import { getParseDate, getLocaleDateFormat } from '../../../../helpers/date-format-helper';
 import { faTrash, faBoxArchive, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { ITask, ITaskInfo } from '../../../../store/taskSlice';
 
 interface IActions {
-  onTaskPreviewToogle(status: boolean, id: any): void;
-  onTaskArchive(id: any): void;
-  onTaskRemove(id: any): void;
+  isAction: boolean,
+  onTaskPreviewToogle?(status: boolean, id: any): void;
+  onTaskArchive?(id: any): void;
+  onTaskRemove?(id: any): void;
   onTaskListToogle?(status: boolean, category?: null): void,
 }
 
@@ -19,14 +20,12 @@ interface IHeadTable {
 
 interface IBodyTable extends IActions {
   body: ITask[] | ITaskInfo[],
-  isAction: boolean,
 }
 
-interface ITable extends IActions {
+export interface ITable extends IActions {
   headers: string[],
-  tasks: ITask[] | ITaskInfo[],
+  items: ITask[] | ITaskInfo[],
   className: string,
-  isAction: boolean,
 }
 
 const HeadTable = (props: IHeadTable) => (
@@ -47,7 +46,7 @@ const HeadTable = (props: IHeadTable) => (
 const BodyTable = (props: IBodyTable) => (
   <tbody>
     {props.body.map((task: any) => {
-      const categoryIcon = categories.find((item) => item.value === task.category);
+      const categoryIcon = tableCategories.find((item) => item.value === task.category);
       const convertedCreatedDate = props.isAction && getLocaleDateFormat(task.created, { month: 'long', day: 'numeric', year: 'numeric' });
       const dates = props.isAction && getParseDate(task.content);
   
@@ -71,9 +70,9 @@ const BodyTable = (props: IBodyTable) => (
             </td>
             <td className='p-4 bg-slate-200 truncate'>
               <div className='flex justify-end gap-2'>
-                <button onClick={() => props.onTaskPreviewToogle(true, task.id)}><FontAwesomeIcon icon={faPenToSquare as IconProp} /></button>
-                <button onClick={() => props.onTaskArchive(task.id)}><FontAwesomeIcon icon={faBoxArchive as IconProp} /></button>
-                <button onClick={() => props.onTaskRemove(task.id)}><FontAwesomeIcon icon={faTrash as IconProp} /></button>
+                <button onClick={() => props.onTaskPreviewToogle && props.onTaskPreviewToogle(true, task.id)}><FontAwesomeIcon icon={faPenToSquare as IconProp} /></button>
+                <button onClick={() => props.onTaskArchive && props.onTaskArchive(task.id)}><FontAwesomeIcon icon={faBoxArchive as IconProp} /></button>
+                <button onClick={() => props.onTaskRemove && props.onTaskRemove(task.id)}><FontAwesomeIcon icon={faTrash as IconProp} /></button>
               </div>
             </td>
           </>
@@ -89,12 +88,12 @@ const BodyTable = (props: IBodyTable) => (
   </tbody>
 )
 
-const Table = ({ headers, tasks, className, isAction, onTaskPreviewToogle, onTaskListToogle, onTaskRemove, onTaskArchive }: ITable) => {
+const Table = ({ headers, items, className, isAction, onTaskPreviewToogle, onTaskListToogle, onTaskRemove, onTaskArchive }: ITable) => {
   return (
     <table className={`table-fixed w-full border-collapse rounded-xl overflow-hidden ${className}`}>
       <HeadTable headers={headers} isAction={isAction} />
       <BodyTable
-        body={tasks}
+        body={items}
         isAction={isAction}
         onTaskPreviewToogle={onTaskPreviewToogle}
         onTaskRemove={onTaskRemove}
