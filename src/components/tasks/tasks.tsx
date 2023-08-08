@@ -1,11 +1,11 @@
-import { Table } from './components/table/table';
-import { categories } from './constants/category';
+import uniqueId from 'lodash/uniqueId';
+import { useState } from 'react';
+import { Button } from '../common/button/button';
+import { TaskPreview, TaskList, Table } from './components/components';
+import { tableCategories, tableHeaders } from './constants/table';
 import { addTask, editTask, removeTask, archiveTask, unarchiveTask } from '../../store/taskSlice';
 import { useDispatch, useSelector } from '../../store/store';
 import { selectTasksState } from '../../store/taskSlice';
-import { TaskPreview, TaskList } from './components/components';
-import uniqueId from 'lodash/uniqueId';
-import { useState } from 'react';
 
 const Tasks = () => {
   const dispatch = useDispatch();
@@ -24,7 +24,7 @@ const Tasks = () => {
   const handleTaskUnarchive = (id: string) => dispatch(unarchiveTask({ id }))
 
   const tasksActive = tasks.filter((task) => !task.archived);
-  const tasksInfo = categories.reduce((acc: { category: string, active: number, archived: number }[], category) => {
+  const tasksInfo = tableCategories.reduce((acc: { category: string, active: number, archived: number }[], category) => {
     const activeTasks = tasks.filter((task) => !task.archived && task.category === category.value) ;
     const archivedTasks = tasks.filter((task) => task.archived && task.category === category.value);
     const newTest: { id: string, category: string, active: number, archived: number } = { id: uniqueId(), category: category.value, active: activeTasks.length, archived: archivedTasks.length }
@@ -35,25 +35,23 @@ const Tasks = () => {
   return (
     <main className="flex flex-col gap-4 px-10 mt-5">
       <Table
-        headers={['name', 'created', 'category', 'content', 'dates']}
-        tasks={tasksActive}
+        headers={tableHeaders.active}
+        items={tasksActive}
         isAction={true}
         onTaskRemove={handleTaskRemove}
         onTaskArchive={handleTaskArchive}
         onTaskPreviewToogle={handleTaskPreviewToggle}
         className=''
       />
-      <button
-        type="button"
-        className='ml-auto p-2 rounded bg-slate-600 text-white hover:bg-slate-200 hover:text-slate-900' 
+      <Button
+        className='ml-auto p-2 rounded bg-slate-600 text-white hover:bg-slate-200 hover:text-slate-900'
         onClick={() => handleTaskPreviewToggle(true)}
-      >
-        Create Note
-      </button>
+        label="Create Note"
+      />
       <Table
         className='mt-[50px]'
-        headers={['category', 'active', 'archived']}
-        tasks={tasksInfo}
+        headers={tableHeaders.stats}
+        items={tasksInfo}
         isAction={false}
         onTaskRemove={handleTaskRemove}
         onTaskArchive={handleTaskArchive}
