@@ -33,15 +33,15 @@ const Tasks = () => {
   }, []);
 
   return (
-    <main className="flex flex-col gap-4 px-10 mt-5">
+    <main className="max-w-4xl h-full mx-auto px-10 flex flex-col justify-center gap-4">
       <Table
+        className='w-full'
         headers={tableHeaders.active}
         items={tasksActive}
         isAction={true}
         onTaskRemove={handleTaskRemove}
         onTaskArchive={handleTaskArchive}
         onTaskPreviewToogle={handleTaskPreviewToggle}
-        className=''
       />
       <Button
         className='ml-auto p-2 rounded bg-slate-600 text-white hover:bg-slate-200 hover:text-slate-900'
@@ -49,7 +49,7 @@ const Tasks = () => {
         label="Create Note"
       />
       <Table
-        className='mt-[50px]'
+        className='w-full sm:w-10/12 md:w-9/12 mt-6'
         headers={tableHeaders.stats}
         items={tasksInfo}
         isAction={false}
