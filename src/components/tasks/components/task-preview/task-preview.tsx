@@ -14,7 +14,6 @@ export interface ITaskPreviewProps {
 
 const TaskPreview = ({ taskId = null, onTasktAdd, onTaskEdit, onTaskPreviewToggle }: ITaskPreviewProps) => {
   const tasks = useSelector(selectTasksState);
-  console.log(tasks)
   const previewTask = taskId ? tasks.find((task) => task.id === taskId) : { name: '', content: '', category: '' };
   const initTaskState = {
     name: previewTask!.name,

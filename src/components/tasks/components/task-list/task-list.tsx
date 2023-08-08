@@ -27,7 +27,7 @@ const TaskList = (props: ITaskListProps) => {
               <div>{task.name}</div>
               <div>{getLocaleDateFormat(task.created, { month: 'long', day: 'numeric', year: 'numeric' })}</div>
               <div className='truncate'>{task.content}</div>
-              <button className="ml-auto" onClick={() => props.onTaskUnarchive(task.id)}><FontAwesomeIcon icon={faXmark as IconProp} /></button>
+              <button className="px-1 ml-auto rounded-full hover:bg-slate-500" onClick={() => props.onTaskUnarchive(task.id)}><FontAwesomeIcon icon={faXmark as IconProp} /></button>
             </div>
           )
         }) : (
