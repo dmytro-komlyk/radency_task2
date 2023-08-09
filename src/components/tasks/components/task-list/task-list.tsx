@@ -5,18 +5,18 @@ import { getLocaleDateFormat } from '../../../../helpers/date-format-helper';
 import { useSelector } from '../../../../store/store';
 import { selectTasksState } from '../../../../store/taskSlice';
 import { Modal } from '../../../common/modal/modal';
-import { categories } from '../../constants/category';
+import { tableCategories } from '../../constants/table';
 
-interface ITaskList {
+export interface ITaskListProps {
   category: string | null,
   onTaskListToogle(status: boolean, category?: null): void,
   onTaskUnarchive(id: string): void
-}
+};
 
-const TaskList = (props: ITaskList) => {
+const TaskList = (props: ITaskListProps) => {
   const tasks = useSelector(selectTasksState);
   const archivedTasks = tasks.filter((task) => task.archived && task.category === props.category);
-  const iconModalCategory = categories.find((item) => item.value === props.category);
+  const iconModalCategory = tableCategories.find((item) => item.value === props.category);
   return (
     <Modal icon={iconModalCategory?.icon} title={iconModalCategory?.value} onShow={props.onTaskListToogle}>
       <div className='flex flex-col overflow-y-auto gap-3 h-52'>
@@ -27,7 +27,7 @@ const TaskList = (props: ITaskList) => {
               <div>{task.name}</div>
               <div>{getLocaleDateFormat(task.created, { month: 'long', day: 'numeric', year: 'numeric' })}</div>
               <div className='truncate'>{task.content}</div>
-              <button className="ml-auto" onClick={() => props.onTaskUnarchive(task.id)}><FontAwesomeIcon icon={faXmark as IconProp} /></button>
+              <button className="px-1 ml-auto rounded-full hover:bg-slate-500" onClick={() => props.onTaskUnarchive(task.id)}><FontAwesomeIcon icon={faXmark as IconProp} /></button>
             </div>
           )
         }) : (

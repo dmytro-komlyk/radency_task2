@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { Modal } from '../../../common/modal/modal';
+import { Button } from '../../../common/button/button';
 import { useSelector } from '../../../../store/store';
 import { selectTasksState } from '../../../../store/taskSlice';
 import { getValidateForm } from '../../../../helpers/validate-helper';
 
-interface ITaskPreviewProps {
+export interface ITaskPreviewProps {
   taskId: string | null,
   onTasktAdd: (values: {}) => void,
   onTaskEdit: (id: string, values: {}) => void,
@@ -130,13 +131,12 @@ const TaskPreview = ({ taskId = null, onTasktAdd, onTaskEdit, onTaskPreviewToggl
             </div>
           </fieldset>
         </div>
-        <button
+        <Button
           type='submit'
           className='w-[50%] ml-auto text-white bg-slate-500 hover:bg-slate-300 hover:text-slate-950 focus:ring-4 focus:outline-none focus:ring-slate-300 font-medium rounded-lg text-sm sm:w-auto px-5 py-2.5 text-center'
           disabled={isSubmit}
-        >
-          {taskId ? 'Save' : 'Submit'}
-        </button>
+          label={taskId ? 'Save' : 'Submit'}
+        />
       </form>
     </Modal>
   )
